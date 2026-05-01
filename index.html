@@ -1,1 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RootedEarth — Organic Farming Awareness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --soil: #3b2a1a;
+    --bark: #5c3d1e;
+    --moss: #4a7c59;
+    --leaf: #6aab7e;
+    --sprout: #9ecb9a;
+    --cream: #f5f0e8;
+    --parchment: #ede5d0;
+    --wheat: #d4b896;
+    --sky: #c8dfc5;
+    --white: #fdfaf5;
+    --text-dark: #2a1e10;
+    --text-mid: #5a4230;
+    --shadow: rgba(59,42,26,0.18);
+  }
 
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    opacity: 0.5;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem;
+    height: 64px;
+    background: rgba(245,240,232,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--parchment);
+    box-shadow: 0 2px 20px var(--shadow);
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.45rem;
+    color: var(--moss);
+    letter-spacing: -0.5px;
+    display: flex; align-items: center; gap: 0.4rem;
+    text-decoration: none;
+  }
+  .logo span { color: var(--bark); }
+
+  .nav-links {
+    display: flex; gap: 2rem; list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-mid);
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; left: 0; bottom: -3px; width: 0; height: 2px;
+    background: var(--moss);
+    transition: width 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--moss); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 4px;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--bark);
+    transition: all 0.3s ease;
+    border-radius: 2px;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none; position: fixed; top: 64px; left: 0; right: 0;
+    background: var(--cream); z-index: 99;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 8px 24px var(--shadow);
+    border-bottom: 2px solid var(--parchment);
+    transform: translateY(-20px); opacity: 0;
+    transition: all 0.3s ease;
+  }
+  .mobile-menu.open { transform: translateY(0); opacity: 1; }
+  .mobile-menu a {
+    display: block; padding: 0.75rem 0;
+    text-decoration: none; color: var(--text-mid);
+    font-weight: 500; font-size: 1rem;
+    border-bottom: 1px solid var(--parchment);
+    transition: color 0.2s, padding-left 0.2s;
+  }
+  .mobile-menu a:hover { color: var(--moss); padding-left: 0.5rem; }
+
+  /* ── HERO ── */
+  #home {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 7rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(160deg, var(--sky) 0%, var(--cream) 60%);
+  }
+
+  .hero-bg-circles {
+    position: absolute; inset: 0; pointer-events: none;
+  }
+  .hero-bg-circles span {
+    position: absolute; border-radius: 50%;
+    background: var(--sprout); opacity: 0.12;
+  }
+  .hero-bg-circles span:nth-child(1) { width: 500px; height: 500px; top: -100px; right: -100px; }
+  .hero-bg-circles span:nth-child(2) { width: 300px; height: 300px; bottom: 50px; left: -80px; opacity: 0.08; background: var(--leaf); }
+  .hero-bg-circles span:nth-child(3) { width: 180px; height: 180px; top: 40%; right: 20%; opacity: 0.1; background: var(--wheat); }
+
+  .hero-inner {
+    max-width: 720px; position: relative; z-index: 1;
+    animation: fadeUp 0.9s ease both;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--moss); color: var(--white);
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.35rem 1rem;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.6rem, 6vw, 4.5rem);
+    line-height: 1.1;
+    color: var(--soil);
+    margin-bottom: 1.2rem;
+  }
+  h1 em { color: var(--moss); font-style: italic; }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--text-mid);
+    line-height: 1.7;
+    max-width: 560px;
+    margin-bottom: 2.2rem;
+  }
+
+  .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    border-radius: 100px;
+    font-size: 0.9rem; font-weight: 500;
+    cursor: pointer; border: none;
+    text-decoration: none;
+    transition: all 0.25s ease;
+  }
+  .btn-primary {
+    background: var(--moss); color: var(--white);
+    box-shadow: 0 4px 16px rgba(74,124,89,0.35);
+  }
+  .btn-primary:hover { background: var(--bark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(92,61,30,0.3); }
+  .btn-outline {
+    background: transparent; color: var(--moss);
+    border: 2px solid var(--moss);
+  }
+  .btn-outline:hover { background: var(--moss); color: var(--white); transform: translateY(-2px); }
+
+  .hero-stats {
+    display: flex; gap: 2.5rem; flex-wrap: wrap;
+    margin-top: 3rem; padding-top: 2rem;
+    border-top: 1px solid var(--wheat);
+  }
+  .stat-item { }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; font-weight: 700;
+    color: var(--moss);
+  }
+  .stat-label { font-size: 0.8rem; color: var(--text-mid); margin-top: 0.1rem; }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 2rem; position: relative; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+
+  .section-tag {
+    display: inline-block;
+    font-size: 0.72rem; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--leaf); margin-bottom: 0.6rem;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: var(--soil); margin-bottom: 1rem; line-height: 1.2;
+  }
+  .section-desc {
+    font-size: 1rem; color: var(--text-mid);
+    line-height: 1.7; max-width: 600px;
+    margin-bottom: 2.5rem;
+  }
+
+  /* ── ABOUT ── */
+  #about { background: var(--white); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .about-visual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .about-card {
+    background: var(--parchment);
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  .about-card:hover { transform: translateY(-6px); }
+  .about-card:first-child { grid-column: span 2; background: var(--moss); color: var(--white); }
+  .about-card .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+  .about-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 0.3rem; }
+  .about-card p { font-size: 0.85rem; opacity: 0.8; line-height: 1.5; }
+
+  /* ── GALLERY ── */
+  #gallery { background: var(--cream); }
+
+  .upload-zone {
+    border: 2px dashed var(--leaf);
+    border-radius: 16px;
+    padding: 2.5rem;
+    text-align: center;
+    cursor: pointer;
+    background: var(--white);
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+  }
+  .upload-zone:hover, .upload-zone.drag-over {
+    border-color: var(--moss);
+    background: var(--sky);
+  }
+  .upload-zone .upload-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+  .upload-zone p { color: var(--text-mid); font-size: 0.9rem; }
+  .upload-zone strong { color: var(--moss); }
+  #fileInput { display: none; }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+
+  .gallery-item {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    background: var(--parchment);
+    cursor: pointer;
+    box-shadow: 0 2px 12px var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .gallery-item:hover { transform: scale(1.03); box-shadow: 0 8px 28px var(--shadow); }
+  .gallery-item img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+  .gallery-item:hover img { transform: scale(1.08); }
+  .gallery-item .overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(59,42,26,0.7) 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.3s;
+    display: flex; align-items: flex-end; padding: 1rem;
+    color: var(--white); font-size: 0.85rem;
+  }
+  .gallery-item:hover .overlay { opacity: 1; }
+
+  /* placeholder cards */
+  .placeholder-card {
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 0.4rem;
+    background: var(--parchment);
+    border-radius: 12px; aspect-ratio: 4/3;
+    font-size: 0.8rem; color: var(--text-mid);
+  }
+  .placeholder-card span { font-size: 2rem; }
+
+  /* ── VIDEO ── */
+  #videos { background: var(--soil); color: var(--cream); }
+  #videos h2 { color: var(--cream); }
+  #videos .section-tag { color: var(--sprout); }
+  #videos .section-desc { color: var(--wheat); }
+
+  .video-upload-zone {
+    border: 2px dashed var(--leaf);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    background: rgba(255,255,255,0.05);
+    margin-bottom: 2rem;
+    transition: all 0.3s;
+  }
+  .video-upload-zone:hover { background: rgba(255,255,255,0.1); border-color: var(--sprout); }
+  .video-upload-zone p { color: var(--wheat); font-size: 0.9rem; }
+  .video-upload-zone strong { color: var(--sprout); }
+  #videoInput { display: none; }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .video-card {
+    background: rgba(255,255,255,0.07);
+    border-radius: 14px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: transform 0.3s ease;
+  }
+  .video-card:hover { transform: translateY(-4px); }
+  .video-card .embed-wrapper {
+    position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+  }
+  .video-card .embed-wrapper iframe,
+  .video-card .embed-wrapper video {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
+  }
+  .video-card .video-info { padding: 1rem; }
+  .video-card .video-info h3 { font-size: 0.95rem; margin-bottom: 0.3rem; font-weight: 500; }
+  .video-card .video-info p { font-size: 0.8rem; color: var(--wheat); }
+
+  /* ── RECOMMENDATIONS ── */
+  #recommendations { background: var(--parchment); }
+
+  .keyword-bar {
+    display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2rem;
+  }
+  .keyword-btn {
+    padding: 0.45rem 1.1rem;
+    border-radius: 100px;
+    border: 2px solid var(--moss);
+    background: transparent;
+    color: var(--moss);
+    font-size: 0.8rem; font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .keyword-btn:hover, .keyword-btn.active {
+    background: var(--moss); color: var(--white);
+  }
+
+  .rec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .rec-card {
+    background: var(--white);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px var(--shadow);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .rec-card:hover { transform: translateY(-6px); box-shadow: 0 10px 30px var(--shadow); }
+  .rec-card .thumb {
+    aspect-ratio: 16/9;
+    background: var(--sky);
+    overflow: hidden;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem;
+  }
+  .rec-card .thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .rec-card .rec-info { padding: 0.85rem; }
+  .rec-card .rec-info h4 { font-size: 0.82rem; font-weight: 500; margin-bottom: 0.3rem; line-height: 1.4; }
+  .rec-card .rec-info .source { font-size: 0.72rem; color: var(--text-mid); }
+  .rec-card .rec-badge {
+    display: inline-block; font-size: 0.65rem; padding: 0.15rem 0.5rem;
+    border-radius: 100px; margin-bottom: 0.3rem;
+  }
+  .badge-video { background: #fee2e2; color: #991b1b; }
+  .badge-article { background: #d1fae5; color: #065f46; }
+  .badge-guide { background: #dbeafe; color: #1e40af; }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--white); }
+
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1.3fr; gap: 4rem; align-items: start;
+  }
+
+  .contact-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; margin-bottom: 1rem; color: var(--soil);
+  }
+  .contact-info p { color: var(--text-mid); line-height: 1.7; font-size: 0.95rem; margin-bottom: 1.5rem; }
+  .contact-detail {
+    display: flex; align-items: center; gap: 0.75rem;
+    margin-bottom: 0.75rem; font-size: 0.9rem; color: var(--text-mid);
+  }
+  .contact-detail .ico { font-size: 1.2rem; }
+
+  .form-group { margin-bottom: 1.25rem; }
+  .form-group label {
+    display: block; font-size: 0.82rem; font-weight: 500;
+    color: var(--text-mid); margin-bottom: 0.4rem;
+    letter-spacing: 0.03em;
+  }
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--parchment);
+    border-radius: 10px;
+    background: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: var(--moss);
+    box-shadow: 0 0 0 3px rgba(74,124,89,0.15);
+    background: var(--white);
+  }
+  .form-group input.error, .form-group textarea.error { border-color: #e87c7c; }
+  .form-group .err-msg { font-size: 0.75rem; color: #c0392b; margin-top: 0.25rem; display: none; }
+  .form-group.has-error .err-msg { display: block; }
+  .form-group textarea { resize: vertical; min-height: 130px; }
+
+  .form-success {
+    display: none; background: #d1fae5; border: 1px solid #6ee7b7;
+    border-radius: 10px; padding: 1rem 1.25rem;
+    color: #065f46; font-size: 0.9rem; margin-top: 1rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--soil);
+    color: var(--wheat);
+    padding: 3rem 2rem 1.5rem;
+    text-align: center;
+  }
+  footer .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; color: var(--sprout);
+    margin-bottom: 0.75rem;
+  }
+  footer p { font-size: 0.85rem; opacity: 0.7; line-height: 1.7; max-width: 480px; margin: 0 auto 1.5rem; }
+  footer .footer-links { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
+  footer .footer-links a { color: var(--sprout); text-decoration: none; font-size: 0.85rem; transition: opacity 0.2s; }
+  footer .footer-links a:hover { opacity: 0.7; }
+  footer .copy { font-size: 0.75rem; opacity: 0.45; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; margin-top: 0; }
+
+  /* ── LIGHTBOX ── */
+  .lightbox {
+    display: none; position: fixed; inset: 0; z-index: 200;
+    background: rgba(30,20,10,0.92);
+    align-items: center; justify-content: center;
+    backdrop-filter: blur(6px);
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: 90vw; max-height: 85vh; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+  .lightbox-close {
+    position: fixed; top: 1.5rem; right: 1.5rem;
+    background: none; border: none; color: white; font-size: 2rem;
+    cursor: pointer; opacity: 0.8;
+  }
+  .lightbox-close:hover { opacity: 1; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .mobile-menu { display: block; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .hero-stats { gap: 1.5rem; }
+    .video-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 480px) {
+    .about-visual { grid-template-columns: 1fr; }
+    .about-card:first-child { grid-column: span 1; }
+    .rec-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* High Contrast Mode */
+  @media (prefers-contrast: high) {
+    :root {
+      --moss: #1a5c32; --leaf: #1a5c32; --text-mid: #1a1a1a;
+      --shadow: rgba(0,0,0,0.4); --parchment: #e8e0cc;
+    }
+    .btn-primary { background: #1a5c32; }
+    .nav-links a { color: #2a1e10; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav aria-label="Main Navigation">
+  <a href="#home" class="logo">🌱 <span>Rooted</span>Earth</a>
+  <ul class="nav-links" role="list">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#videos">Videos</a></li>
+    <li><a href="#recommendations">Recommendations</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Toggle mobile menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <a href="#home" class="mobile-link">Home</a>
+  <a href="#about" class="mobile-link">About</a>
+  <a href="#gallery" class="mobile-link">Gallery</a>
+  <a href="#videos" class="mobile-link">Videos</a>
+  <a href="#recommendations" class="mobile-link">Recommendations</a>
+  <a href="#contact" class="mobile-link">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-bg-circles">
+    <span></span><span></span><span></span>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-badge">🌾 Growing a Healthier World</div>
+    <h1>Nurture the Soil,<br><em>Nourish the Future</em></h1>
+    <p class="hero-sub">Join a growing community dedicated to organic farming, sustainable agriculture, and eco-conscious living. Share your story, discover resources, and be the change.</p>
+    <div class="btn-group">
+      <a href="#gallery" class="btn btn-primary">📷 Share Your Farm</a>
+      <a href="#about" class="btn btn-outline">Learn More</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">1.4B</div>
+        <div class="stat-label">Hectares at risk from chemicals</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3×</div>
+        <div class="stat-label">More biodiversity in organic farms</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">40%</div>
+        <div class="stat-label">Lower carbon footprint</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid reveal">
+      <div>
+        <div class="section-tag">🌿 Why It Matters</div>
+        <h2>Farming in Harmony with Nature</h2>
+        <p class="section-desc">Organic farming is more than a method — it's a philosophy that respects the earth's natural cycles, protects biodiversity, and ensures food safety for generations to come.</p>
+        <p style="color:var(--text-mid);line-height:1.8;font-size:0.95rem;margin-bottom:1.5rem;">
+          Conventional agriculture uses synthetic pesticides and fertilizers that degrade soil health over time. Organic practices rebuild ecosystems, support pollinators, and produce food free from harmful residues.
+        </p>
+        <a href="#recommendations" class="btn btn-primary" style="text-decoration:none;">Discover Resources →</a>
+      </div>
+      <div class="about-visual">
+        <div class="about-card">
+          <div class="icon">🌍</div>
+          <h3>Soil Health</h3>
+          <p>Organic methods restore soil microbiome, increasing long-term productivity and carbon storage.</p>
+        </div>
+        <div class="about-card" style="background:var(--sky);">
+          <div class="icon">🐝</div>
+          <h3>Biodiversity</h3>
+          <p>Organic farms host 50% more plant species and diverse insect populations.</p>
+        </div>
+        <div class="about-card" style="background:var(--parchment);">
+          <div class="icon">💧</div>
+          <h3>Water Safety</h3>
+          <p>No synthetic runoff means cleaner rivers, lakes, and drinking water sources.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="section-inner">
+    <div class="section-tag reveal">📸 Community Gallery</div>
+    <h2 class="reveal">Share Your Organic Story</h2>
+    <p class="section-desc reveal">Upload photos of your farm, harvest, or sustainable practices. Inspire others with your journey toward organic living.</p>
+
+    <div class="upload-zone reveal" id="uploadZone" role="button" tabindex="0" aria-label="Upload images">
+      <div class="upload-icon">📁</div>
+      <p><strong>Drag & drop images here</strong> or click to browse</p>
+      <p style="margin-top:0.4rem;font-size:0.8rem;">Supports JPG, PNG, WEBP — Max 10MB each</p>
+      <input type="file" id="fileInput" accept="image/*" multiple aria-label="Select images to upload">
+    </div>
+
+    <div class="gallery-grid" id="galleryGrid">
+      <!-- Placeholder cards -->
+      <div class="placeholder-card"><span>🌾</span><p>Wheat Fields</p></div>
+      <div class="placeholder-card"><span>🥕</span><p>Organic Harvest</p></div>
+      <div class="placeholder-card"><span>🌻</span><p>Sunflower Farm</p></div>
+      <div class="placeholder-card"><span>🚜</span><p>Sustainable Tilling</p></div>
+      <div class="placeholder-card"><span>🌿</span><p>Herb Garden</p></div>
+      <div class="placeholder-card"><span>🍅</span><p>Tomato Crop</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close image viewer">✕</button>
+  <img id="lightboxImg" src="" alt="Expanded gallery image">
+</div>
+
+<!-- VIDEOS -->
+<section id="videos">
+  <div class="section-inner">
+    <div class="section-tag reveal">🎬 Video Hub</div>
+    <h2 class="reveal">Watch, Learn, Grow</h2>
+    <p class="section-desc reveal">Upload your own farming videos or explore curated content on organic practices from around the world.</p>
+
+    <div class="video-upload-zone reveal" id="videoUploadZone" role="button" tabindex="0">
+      <div style="font-size:2rem;margin-bottom:0.5rem;">🎥</div>
+      <p><strong>Upload a video</strong> or drag & drop here</p>
+      <p style="margin-top:0.3rem;font-size:0.8rem;">MP4, MOV, WEBM supported</p>
+      <input type="file" id="videoInput" accept="video/*" aria-label="Select video to upload">
+    </div>
+
+    <div class="video-grid" id="videoGrid">
+      <!-- Embedded YouTube Videos -->
+      <div class="video-card">
+        <div class="embed-wrapper">
+          <iframe src="https://www.youtube.com/embed/XTbTuFiZjks" title="Introduction to Organic Farming" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="video-info">
+          <h3>Introduction to Organic Farming</h3>
+          <p>A beginner's guide to starting your organic journey</p>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="embed-wrapper">
+          <iframe src="https://www.youtube.com/embed/Yn9OKk_V4U4" title="Composting Basics" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="video-info">
+          <h3>Composting Basics for Healthy Soil</h3>
+          <p>Turn kitchen waste into garden gold</p>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="embed-wrapper">
+          <iframe src="https://www.youtube.com/embed/WqvkXQ3Wk8k" title="Permaculture Design" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="video-info">
+          <h3>Permaculture Design Principles</h3>
+          <p>Design sustainable food systems with permaculture</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RECOMMENDATIONS -->
+<section id="recommendations">
+  <div class="section-inner">
+    <div class="section-tag reveal">🔍 Curated Resources</div>
+    <h2 class="reveal">Explore & Discover</h2>
+    <p class="section-desc reveal">Browse curated resources, articles, videos, and guides based on your interests in organic farming.</p>
+
+    <div class="keyword-bar reveal" role="group" aria-label="Filter keywords">
+      <button class="keyword-btn active" data-keyword="organic-farming">🌱 Organic Farming</button>
+      <button class="keyword-btn" data-keyword="sustainable-agriculture">♻️ Sustainable Ag</button>
+      <button class="keyword-btn" data-keyword="composting">🍂 Composting</button>
+      <button class="keyword-btn" data-keyword="permaculture">🌀 Permaculture</button>
+      <button class="keyword-btn" data-keyword="seed-saving">🌰 Seed Saving</button>
+      <button class="keyword-btn" data-keyword="soil-health">🪱 Soil Health</button>
+    </div>
+
+    <div class="rec-grid" id="recGrid"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="section-tag">✉️ Get in Touch</div>
+        <h2>Let's Grow Together</h2>
+        <div class="contact-info">
+          <p>Have a story to share? Want to collaborate or feature your organic farm? We'd love to hear from you.</p>
+          <div class="contact-detail"><span class="ico">📧</span> hello@rootedearth.org</div>
+          <div class="contact-detail"><span class="ico">📍</span> India — Serving farmers worldwide</div>
+          <div class="contact-detail"><span class="ico">🌐</span> @RootedEarthFarms</div>
+        </div>
+      </div>
+      <div class="reveal">
+        <form id="contactForm" novalidate aria-label="Contact form">
+          <div class="form-group" id="fg-name">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" placeholder="e.g. Priya Sharma" autocomplete="name" aria-required="true">
+            <div class="err-msg" role="alert">Please enter your name.</div>
+          </div>
+          <div class="form-group" id="fg-email">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" aria-required="true">
+            <div class="err-msg" role="alert">Please enter a valid email address.</div>
+          </div>
+          <div class="form-group" id="fg-msg">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell us about your farm, question, or idea..." aria-required="true"></textarea>
+            <div class="err-msg" role="alert">Please write a message (at least 10 characters).</div>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Send Message 🌿</button>
+          <div class="form-success" id="formSuccess" role="status">✅ Message sent! We'll get back to you within 2-3 days.</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">🌱 RootedEarth</div>
+  <p>Advocating for organic farming, sustainable agriculture, and a healthier planet — one harvest at a time.</p>
+  <div class="footer-links">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#videos">Videos</a>
+    <a href="#recommendations">Recommendations</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <p class="copy">© 2025 RootedEarth. Made with 🌿 for a sustainable world.</p>
+</footer>
+
+<script>
+/* ── MOBILE NAV ── */
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+
+hamburger.addEventListener('click', () => {
+  const isOpen = hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open', isOpen);
+  hamburger.setAttribute('aria-expanded', isOpen);
+  mobileMenu.setAttribute('aria-hidden', !isOpen);
+});
+
+document.querySelectorAll('.mobile-link').forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+  });
+});
+
+/* ── SCROLL REVEAL ── */
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+revealEls.forEach(el => observer.observe(el));
+
+/* ── IMAGE GALLERY ── */
+const uploadZone = document.getElementById('uploadZone');
+const fileInput = document.getElementById('fileInput');
+const galleryGrid = document.getElementById('galleryGrid');
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxClose = document.getElementById('lightboxClose');
+
+uploadZone.addEventListener('click', () => fileInput.click());
+uploadZone.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') fileInput.click(); });
+
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault();
+  uploadZone.classList.remove('drag-over');
+  handleFiles(e.dataTransfer.files);
+});
+
+fileInput.addEventListener('change', () => handleFiles(fileInput.files));
+
+function handleFiles(files) {
+  [...files].forEach(file => {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = (e) => addGalleryItem(e.target.result, file.name);
+    reader.readAsDataURL(file);
+  });
+}
+
+function addGalleryItem(src, name) {
+  const item = document.createElement('div');
+  item.className = 'gallery-item';
+  item.innerHTML = `
+    <img src="${src}" alt="${name}" loading="lazy">
+    <div class="overlay">${name}</div>
+  `;
+  item.addEventListener('click', () => openLightbox(src, name));
+  galleryGrid.insertBefore(item, galleryGrid.firstChild);
+}
+
+function openLightbox(src, alt) {
+  lightboxImg.src = src;
+  lightboxImg.alt = alt;
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+lightboxClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ── VIDEO UPLOAD ── */
+const videoUploadZone = document.getElementById('videoUploadZone');
+const videoInput = document.getElementById('videoInput');
+const videoGrid = document.getElementById('videoGrid');
+
+videoUploadZone.addEventListener('click', () => videoInput.click());
+videoUploadZone.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') videoInput.click(); });
+
+videoUploadZone.addEventListener('dragover', e => { e.preventDefault(); videoUploadZone.style.background = 'rgba(255,255,255,0.1)'; });
+videoUploadZone.addEventListener('dragleave', () => videoUploadZone.style.background = '');
+videoUploadZone.addEventListener('drop', e => {
+  e.preventDefault();
+  videoUploadZone.style.background = '';
+  if (e.dataTransfer.files[0]) handleVideoFile(e.dataTransfer.files[0]);
+});
+
+videoInput.addEventListener('change', () => { if (videoInput.files[0]) handleVideoFile(videoInput.files[0]); });
+
+function handleVideoFile(file) {
+  if (!file.type.startsWith('video/')) return;
+  const url = URL.createObjectURL(file);
+  const card = document.createElement('div');
+  card.className = 'video-card';
+  card.innerHTML = `
+    <div class="embed-wrapper">
+      <video controls src="${url}" aria-label="${file.name}"></video>
+    </div>
+    <div class="video-info">
+      <h3>${file.name}</h3>
+      <p>Your uploaded video</p>
+    </div>
+  `;
+  videoGrid.insertBefore(card, videoGrid.firstChild);
+}
+
+/* ── RECOMMENDATIONS ── */
+const recData = {
+  'organic-farming': [
+    { title: 'Getting Started with Organic Farming', type: 'guide', emoji: '📗', source: 'FAO.org', url: 'https://www.fao.org/organicag/en/' },
+    { title: 'Why Organic? Health Benefits Explained', type: 'article', emoji: '🥗', source: 'OrganicFacts.net', url: 'https://www.organicfacts.net/organic-farming.html' },
+    { title: 'Organic Certification: Step by Step', type: 'guide', emoji: '📜', source: 'USDA.gov', url: 'https://www.ams.usda.gov/about-ams/programs-offices/national-organic-program' },
+    { title: 'Top 10 Organic Crops to Grow', type: 'article', emoji: '🌽', source: 'GrowVeg.com', url: 'https://www.growveg.com/' },
+    { title: 'Organic Farming Documentary', type: 'video', emoji: '🎬', source: 'YouTube', url: 'https://www.youtube.com/results?search_query=organic+farming+documentary' },
+    { title: 'Rodale Institute Research on Organic', type: 'article', emoji: '🔬', source: 'RodaleInstitute.org', url: 'https://rodaleinstitute.org/' },
+  ],
+  'sustainable-agriculture': [
+    { title: 'Sustainable Agriculture Practices', type: 'guide', emoji: '♻️', source: 'SARE.org', url: 'https://www.sare.org/resources/' },
+    { title: 'Climate-Smart Agriculture Explained', type: 'article', emoji: '🌡️', source: 'WorldBank.org', url: 'https://www.worldbank.org/en/topic/climate-smart-agriculture' },
+    { title: 'Regenerative Farming Basics', type: 'video', emoji: '🎬', source: 'YouTube', url: 'https://www.youtube.com/results?search_query=regenerative+farming' },
+    { title: 'Water Conservation on Farms', type: 'guide', emoji: '💧', source: 'FAO.org', url: 'https://www.fao.org/land-water/en/' },
+    { title: 'Agroforestry: Trees & Crops Together', type: 'article', emoji: '🌳', source: 'World Agroforestry', url: 'https://www.worldagroforestry.org/' },
+    { title: 'Zero-Waste Farming Techniques', type: 'article', emoji: '🚫🗑️', source: 'EcoFarming.org', url: 'https://www.ecofarming.org/' },
+  ],
+  'composting': [
+    { title: 'Beginner\'s Guide to Composting', type: 'guide', emoji: '🍂', source: 'EPA.gov', url: 'https://www.epa.gov/recycle/composting-home' },
+    { title: 'Hot Composting in 18 Days', type: 'video', emoji: '🎬', source: 'YouTube', url: 'https://www.youtube.com/results?search_query=hot+composting+18+days' },
+    { title: 'Vermicomposting with Worms', type: 'guide', emoji: '🪱', source: 'RodaleInstitute.org', url: 'https://rodaleinstitute.org/science/articles/vermicomposting/' },
+    { title: 'What NOT to Compost', type: 'article', emoji: '❌', source: 'GardenersWorld', url: 'https://www.gardenersworld.com/how-to/grow-plants/composting/' },
+    { title: 'Compost Tea for Plants', type: 'article', emoji: '🍵', source: 'GrowVeg.com', url: 'https://www.growveg.com/' },
+    { title: 'Municipal Composting Programs', type: 'article', emoji: '🏙️', source: 'BioCycle.net', url: 'https://www.biocycle.net/' },
+  ],
+  'permaculture': [
+    { title: 'Introduction to Permaculture Design', type: 'guide', emoji: '🌀', source: 'PermacultureNews.org', url: 'https://permaculturenews.org/' },
+    { title: 'Bill Mollison Permaculture Lectures', type: 'video', emoji: '🎬', source: 'YouTube', url: 'https://www.youtube.com/results?search_query=bill+mollison+permaculture' },
+    { title: 'Zones and Sectors Explained', type: 'article', emoji: '🗺️', source: 'Permaculture.co.uk', url: 'https://www.permaculture.co.uk/' },
+    { title: 'Food Forest Design Basics', type: 'guide', emoji: '🌳', source: 'LearningHerbs', url: 'https://learningherbs.com/' },
+    { title: 'Swales for Water Harvesting', type: 'article', emoji: '💧', source: 'PermacultureResearch', url: 'https://permaculturenews.org/' },
+    { title: 'Gaia\'s Garden Book Review', type: 'article', emoji: '📚', source: 'GoodReads', url: 'https://www.goodreads.com/book/show/324293.Gaia_s_Garden' },
+  ],
+  'seed-saving': [
+    { title: 'Seed Saving 101', type: 'guide', emoji: '🌰', source: 'SeedSavers.org', url: 'https://seedsavers.org/learn/seed-saving' },
+    { title: 'How to Save Tomato Seeds', type: 'video', emoji: '🎬', source: 'YouTube', url: 'https://www.youtube.com/results?search_query=how+to+save+tomato+seeds' },
+    { title: 'Open-Pollinated vs Hybrid Seeds', type: 'article', emoji: '🧬', source: 'OrganicSeedAlliance', url: 'https://seedalliance.org/' },
+    { title: 'Storing Seeds Long-Term', type: 'guide', emoji: '🏺', source: 'SeedSavers.org', url: 'https://seedsavers.org/' },
+    { title: 'Navdanya Seed Library India', type: 'article', emoji: '🇮🇳', source: 'Navdanya.org', url: 'https://navdanya.org/' },
+    { title: 'Heritage Varieties to Preserve', type: 'article', emoji: '🌾', source: 'SlowFoodIntl', url: 'https://www.slowfood.com/' },
+  ],
+  'soil-health': [
+    { title: 'Understanding Soil Structure', type: 'guide', emoji: '🪱', source: 'NRCS.USDA.gov', url: 'https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soils' },
+    { title: 'Soil Microbiome Documentary', type: 'video', emoji: '🎬', source: 'YouTube', url: 'https://www.youtube.com/results?search_query=soil+microbiome+documentary' },
+    { title: 'Cover Crops for Soil Restoration', type: 'article', emoji: '🌿', source: 'SARE.org', url: 'https://www.sare.org/resources/cover-crops/' },
+    { title: 'No-Till Farming Explained', type: 'guide', emoji: '🚫🚜', source: 'NoTillFarmer.com', url: 'https://www.no-tillfarmer.com/' },
+    { title: 'Biochar for Soil Carbon', type: 'article', emoji: '⬛', source: 'InternationalBiochar', url: 'https://biochar-international.org/' },
+    { title: 'Test Your Soil at Home', type: 'guide', emoji: '🧪', source: 'GardenersSupply', url: 'https://www.gardeners.com/' },
+  ]
+};
+
+function renderRecs(keyword) {
+  const data = recData[keyword] || [];
+  recGrid.innerHTML = data.map(item => `
+    <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="rec-card" aria-label="${item.title} — ${item.source}">
+      <div class="thumb">${item.emoji}</div>
+      <div class="rec-info">
+        <span class="rec-badge badge-${item.type}">${item.type}</span>
+        <h4>${item.title}</h4>
+        <div class="source">↗ ${item.source}</div>
+      </div>
+    </a>
+  `).join('');
+}
+
+renderRecs('organic-farming');
+
+document.querySelectorAll('.keyword-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.keyword-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderRecs(btn.dataset.keyword);
+  });
+});
+
+/* ── CONTACT FORM ── */
+const form = document.getElementById('contactForm');
+const formSuccess = document.getElementById('formSuccess');
+
+function validateField(id, groupId, condition) {
+  const fg = document.getElementById(groupId);
+  const input = document.getElementById(id);
+  if (!condition(input.value)) {
+    fg.classList.add('has-error');
+    input.classList.add('error');
+    return false;
+  } else {
+    fg.classList.remove('has-error');
+    input.classList.remove('error');
+    return true;
+  }
+}
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const n = validateField('name', 'fg-name', v => v.trim().length >= 2);
+  const em = validateField('email', 'fg-email', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+  const m = validateField('message', 'fg-msg', v => v.trim().length >= 10);
+  if (n && em && m) {
+    form.style.opacity = '0.5';
+    setTimeout(() => {
+      form.reset();
+      form.style.opacity = '1';
+      formSuccess.style.display = 'block';
+      setTimeout(() => formSuccess.style.display = 'none', 5000);
+    }, 800);
+  }
+});
+
+['name','email','message'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => {
+    const fg = document.getElementById('fg-' + id.replace('message','msg'));
+    if (fg) {
+      fg.classList.remove('has-error');
+      document.getElementById(id).classList.remove('error');
+    }
+  });
+});
+</script>
+</body>
+</html>
